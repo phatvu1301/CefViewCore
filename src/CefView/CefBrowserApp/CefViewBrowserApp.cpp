@@ -14,6 +14,12 @@
 #include <CefViewCoreProtocol.h>
 
 #include "CefViewSchemeHandler/CefViewSchemeHandlerFactory.h"
+#include "CefViewSchemeHandler/CustomCefViewSchemeHandlerFactory.h"
+#include "CefViewSchemeHandler/CustomCefViewSchemeHandlerFactory.h"
+
+#include <iostream>
+
+static bool g_use_custom_scheme_handler = false;
 
 CefViewBrowserApp::CefViewBrowserApp(const CefString& scheme_name,
                                      const CefString& bridge_name,
@@ -174,10 +180,15 @@ CefViewBrowserApp::GetRenderProcessHandler()
 void
 CefViewBrowserApp::OnContextInitialized()
 {
+  g_use_custom_scheme_handler = !!std::getenv("USE_CUSTOM_SCHEME_HANDLER");
   CEF_REQUIRE_UI_THREAD();
 
-  // register custom scheme and handler
-  CefRegisterSchemeHandlerFactory(builtin_scheme_name_, "", new CefViewSchemeHandlerFactory(this));
+  if (g_use_custom_scheme_handler){
+    std::cout << "CefViewBrowserApp::OnContextInitialized()" << std::endl;
+    CefRegisterSchemeHandlerFactory(builtin_scheme_name_, "", new CustomCefViewSchemeHandlerFactory(this));
+  } else
+    // register custom scheme and handler
+    CefRegisterSchemeHandlerFactory(builtin_scheme_name_, "", new CefViewSchemeHandlerFactory(this));
 }
 
 void
