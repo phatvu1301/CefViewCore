@@ -10,6 +10,7 @@
 CustomCefViewSchemeHandlerFactory::CustomCefViewSchemeHandlerFactory(CefRefPtr<CefViewBrowserApp> app)
   : app_(app)
 {
+  std::cout << "CustomCefViewSchemeHandlerFactory - CustomCefViewSchemeHandlerFactory -1 " << std::endl;
 }
 
 CustomCefViewSchemeHandlerFactory::~CustomCefViewSchemeHandlerFactory() {}
