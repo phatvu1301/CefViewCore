@@ -1,7 +1,7 @@
 ﻿
 #include "CefViewCoreAssetBridge.h"
 
-static FnAsset g_asset_func = nullptr;
+FnAsset g_asset_func = nullptr;
 
 void
 SetAssetFunc(FnAsset func)
