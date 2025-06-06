@@ -5,6 +5,8 @@
 
 #include "CustomCefViewSchemeHandler.h"
 
+#include <iostream>
+
 CustomCefViewSchemeHandlerFactory::CustomCefViewSchemeHandlerFactory(CefRefPtr<CefViewBrowserApp> app)
   : app_(app)
 {
@@ -18,17 +20,20 @@ CustomCefViewSchemeHandlerFactory::Create(CefRefPtr<CefBrowser> browser,
                                     const CefString& scheme_name,
                                     CefRefPtr<CefRequest> request)
 {
+  std::cout << "CustomCefViewSchemeHandlerFactory - Create -1 " << std::endl;
   if (!app_) {
     return nullptr;
   }
 
   auto client = browser->GetHost()->GetClient();
   if (!client) {
+    std::cout << "CustomCefViewSchemeHandlerFactory - Create -2 " << std::endl;
     return nullptr;
   }
 
   auto handler = app_->GetClientHandler(client.get());
   if (!handler) {
+    std::cout << "CustomCefViewSchemeHandlerFactory - Create -2 " << std::endl;
     return nullptr;
   }
   return new CustomCefViewSchemeHandler(browser, frame, handler);

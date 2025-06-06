@@ -25,13 +25,12 @@ CustomCefViewSchemeHandler::Open(CefRefPtr<CefRequest> request, bool& handle_req
   if (browserDelegate) {
     CefString cefStrUrl = request->GetURL();
     browserDelegate->processUrlRequest(browser_, frame_, cefStrUrl.ToString());
-    std::cout << "Using Custom Scheme1 " <<  cefStrUrl << std::endl;
-
+    std::cout << "Using Custom Scheme - Open -1 " <<  cefStrUrl << std::endl;
   }
 
   std::string url = request->GetURL();
   std::string path;
-  std::cout << "Using Custom Scheme1 " <<  url << std::endl;
+  std::cout << "Using Custom Scheme - Open -2 " <<  url << std::endl;
 
   size_t pos = url.find("://");
   if (pos != std::string::npos) {
