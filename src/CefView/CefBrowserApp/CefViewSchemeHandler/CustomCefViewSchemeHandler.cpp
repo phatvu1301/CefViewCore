@@ -1,4 +1,7 @@
 ﻿#include "CustomCefViewSchemeHandler.h"
+#include "CefViewCoreAssetBridge.h"
+#include <cstring>
+#include <iostream>
 
 CustomCefViewSchemeHandler::CustomCefViewSchemeHandler(CefRefPtr<CefBrowser> browser,
                                            CefRefPtr<CefFrame> frame,
@@ -18,15 +21,50 @@ CustomCefViewSchemeHandler::Open(CefRefPtr<CefRequest> request, bool& handle_req
   // DCHECK(!CefCurrentlyOn(TID_UI) && !CefCurrentlyOn(TID_IO));
 
   handle_request = true;
-
   auto browserDelegate = handler_delegate_.lock();
   if (browserDelegate) {
     CefString cefStrUrl = request->GetURL();
     browserDelegate->processUrlRequest(browser_, frame_, cefStrUrl.ToString());
+    std::cout << "Using Custom Scheme1 " <<  cefStrUrl << std::endl;
+
   }
 
-  data_ = "ok";
-  mime_type_ = "text/html";
+  std::string url = request->GetURL();
+  std::string path;
+  std::cout << "Using Custom Scheme1 " <<  url << std::endl;
+
+  size_t pos = url.find("://");
+  if (pos != std::string::npos) {
+    path = url.substr(pos + 3);
+  } else {
+    path = url;
+  }
+
+  data_.clear();
+  mime_type_ = "application/octet-stream";
+
+  int len = 0;
+  const char* cmime = nullptr;
+
+  if (g_asset_func) {
+    const char* buf = g_asset_func(path.c_str(), &len, &cmime);
+    if (buf && len > 0) {
+      data_.assign(buf, len);
+      if (cmime) {
+        mime_type_ = cmime;
+        free(const_cast<char *>(cmime));
+      } else {
+        mime_type_ = "application/octet-stream";
+      }
+      free(const_cast<char *>(buf));
+    } else {
+      data_ = "404 - Not Found";
+      mime_type_ = "text/plain";
+    }
+  } else {
+    data_ = "Asset bridge not set";
+    mime_type_ = "text/plain";
+  }
 
   return true;
 }
@@ -43,6 +81,7 @@ CustomCefViewSchemeHandler::GetResponseHeaders(CefRefPtr<CefResponse> response,
   response->SetStatus(200);
   // Set the resulting response length
   response_length = data_.length();
+  response->SetHeaderByName("Access-Control-Allow-Origin", "*", true);
 }
 
 bool
@@ -86,5 +125,4 @@ CustomCefViewSchemeHandler::Read(void* data_out,
 void
 CustomCefViewSchemeHandler::Cancel()
 {
-  // CEF_REQUIRE_IO_THREAD();
 }
