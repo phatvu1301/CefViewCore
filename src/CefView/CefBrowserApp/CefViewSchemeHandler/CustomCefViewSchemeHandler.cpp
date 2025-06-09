@@ -38,6 +38,8 @@ CustomCefViewSchemeHandler::Open(CefRefPtr<CefRequest> request, bool& handle_req
   } else {
     path = url;
   }
+  std::cout << "Using Custom Scheme - Open - Path  " <<  path << std::endl;
+
 
   data_.clear();
   mime_type_ = "application/octet-stream";
@@ -46,6 +48,7 @@ CustomCefViewSchemeHandler::Open(CefRefPtr<CefRequest> request, bool& handle_req
   const char* cmime = nullptr;
 
   if (g_asset_func) {
+    std::cout << "Using Custom Scheme - g_asset_func 1 " <<  g_asset_func << std::endl;
     const char* buf = g_asset_func(path.c_str(), &len, &cmime);
     if (buf && len > 0) {
       data_.assign(buf, len);
@@ -55,6 +58,7 @@ CustomCefViewSchemeHandler::Open(CefRefPtr<CefRequest> request, bool& handle_req
       } else {
         mime_type_ = "application/octet-stream";
       }
+      std::cout << "Using Custom Scheme - g_asset_func 2 " <<  buf << std::endl;
       free(const_cast<char *>(buf));
     } else {
       data_ = "404 - Not Found";
