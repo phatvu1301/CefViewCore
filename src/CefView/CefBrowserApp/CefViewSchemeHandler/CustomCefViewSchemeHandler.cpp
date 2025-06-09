@@ -54,12 +54,13 @@ CustomCefViewSchemeHandler::Open(CefRefPtr<CefRequest> request, bool& handle_req
       data_.assign(buf, len);
       if (cmime) {
         mime_type_ = cmime;
-        free(const_cast<char *>(cmime));
+        g_free_func(const_cast<char*>(cmime));
       } else {
         mime_type_ = "application/octet-stream";
       }
       std::cout << "Using Custom Scheme - g_asset_func 2 " <<  buf << std::endl;
-      free(const_cast<char *>(buf));
+      g_free_func(const_cast<char*>(buf));
+      // free(const_cast<char *>(buf));
     } else {
       data_ = "404 - Not Found";
       mime_type_ = "text/plain";
