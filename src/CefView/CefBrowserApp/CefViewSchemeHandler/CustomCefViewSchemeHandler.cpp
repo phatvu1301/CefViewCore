@@ -39,6 +39,8 @@ CustomCefViewSchemeHandler::Open(CefRefPtr<CefRequest> request, bool& handle_req
   } else {
     path = url;
   }
+  while (!path.empty() && path.back() == '/') path.pop_back();
+
   std::cout << "Using Custom Scheme - Open - Path  " <<  path << std::endl;
 
 
