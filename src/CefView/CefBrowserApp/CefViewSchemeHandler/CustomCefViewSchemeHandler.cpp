@@ -21,6 +21,7 @@ CustomCefViewSchemeHandler::Open(CefRefPtr<CefRequest> request, bool& handle_req
   // DCHECK(!CefCurrentlyOn(TID_UI) && !CefCurrentlyOn(TID_IO));
 
   handle_request = true;
+
   auto browserDelegate = handler_delegate_.lock();
   if (browserDelegate) {
     CefString cefStrUrl = request->GetURL();
@@ -58,9 +59,8 @@ CustomCefViewSchemeHandler::Open(CefRefPtr<CefRequest> request, bool& handle_req
       } else {
         mime_type_ = "application/octet-stream";
       }
-      std::cout << "Using Custom Scheme - g_asset_func 2 " <<  buf << std::endl;
+      std::cout << "Using Custom Scheme - g_asset_func 2 " << buf << std::endl;
       g_free_func(const_cast<char*>(buf));
-      // free(const_cast<char *>(buf));
     } else {
       data_ = "404 - Not Found";
       mime_type_ = "text/plain";
@@ -69,7 +69,7 @@ CustomCefViewSchemeHandler::Open(CefRefPtr<CefRequest> request, bool& handle_req
     data_ = "Asset bridge not set";
     mime_type_ = "text/plain";
   }
-
+  std::cout << "[CEF SCHEME] path=" << path << ", len=" << len << ", mime=" << mime_type_ << std::endl;
   return true;
 }
 
