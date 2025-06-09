@@ -10,7 +10,7 @@
 CustomCefViewSchemeHandlerFactory::CustomCefViewSchemeHandlerFactory(CefRefPtr<CefViewBrowserApp> app)
   : app_(app)
 {
-  std::cout << "CustomCefViewSchemeHandlerFactory - CustomCefViewSchemeHandlerFactory -1 " << std::endl;
+  std::cout << "CustomCefViewSchemeHandlerFactory - 1 " << std::endl;
 }
 
 CustomCefViewSchemeHandlerFactory::~CustomCefViewSchemeHandlerFactory() {}
@@ -21,21 +21,22 @@ CustomCefViewSchemeHandlerFactory::Create(CefRefPtr<CefBrowser> browser,
                                     const CefString& scheme_name,
                                     CefRefPtr<CefRequest> request)
 {
-  std::cout << "CustomCefViewSchemeHandlerFactory - Create -1 " << std::endl;
+  std::cout << "CustomCefViewSchemeHandlerFactory - START " << std::endl;
   if (!app_) {
     return nullptr;
   }
 
   auto client = browser->GetHost()->GetClient();
   if (!client) {
-    std::cout << "CustomCefViewSchemeHandlerFactory - Create -2 " << std::endl;
+    std::cout << "CustomCefViewSchemeHandlerFactory - Fail - 1 " << std::endl;
     return nullptr;
   }
 
   auto handler = app_->GetClientHandler(client.get());
   if (!handler) {
-    std::cout << "CustomCefViewSchemeHandlerFactory - Create -2 " << std::endl;
+    std::cout << "CustomCefViewSchemeHandlerFactory - Fail - 2 " << std::endl;
     return nullptr;
   }
+  std::cout << "CustomCefViewSchemeHandlerFactory - END " << std::endl;
   return new CustomCefViewSchemeHandler(browser, frame, handler);
 }
