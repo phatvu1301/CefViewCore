@@ -33,18 +33,13 @@ CustomCefViewSchemeHandler::Open(CefRefPtr<CefRequest> request, bool& handle_req
   std::string path;
   std::cout << "Using Custom Scheme - Open -2 " <<  url << std::endl;
 
-  size_t schemePos = url.find("://");
-  std::string afterScheme = url.substr(schemePos + 3);
-
-  auto slash = afterScheme.find('/');
-  if (slash != std::string::npos)
-    afterScheme = afterScheme.substr(slash + 1);
-
-  while (!afterScheme.empty() && afterScheme.back() == '/')
-    afterScheme.pop_back();
-  if (afterScheme.empty()) afterScheme = "index.html";
-
-  path = afterScheme;
+  size_t pos = url.find("://");
+  if (pos != std::string::npos) {
+    path = url.substr(pos + 3);
+  } else {
+    path = url;
+  }
+  while (!path.empty() && path.back() == '/') path.pop_back();
 
   std::cout << "Using Custom Scheme - Open - Path  " <<  path << std::endl;
 

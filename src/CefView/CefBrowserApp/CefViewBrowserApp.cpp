@@ -144,6 +144,7 @@ CefViewBrowserApp::OnBeforeCommandLineProcessing(const CefString& process_type, 
 void
 CefViewBrowserApp::OnRegisterCustomSchemes(CefRawPtr<CefSchemeRegistrar> registrar)
 {
+  std::cout << "Using Custom OnRegisterCustomSchemes" << std::endl;
   if (registrar) {
     // register custom scheme
     int options = 0                                 //
@@ -155,6 +156,8 @@ CefViewBrowserApp::OnRegisterCustomSchemes(CefRawPtr<CefSchemeRegistrar> registr
     if (!registrar->AddCustomScheme(builtin_scheme_name_, options)) {
       logE("faield to add built-in scheme: %s", builtin_scheme_name_.c_str());
     }
+    logD("OnRegisterCustomSchemes: %s", builtin_scheme_name_.c_str());
+    std::cout << "Using Custom OnRegisterCustomSchemes OK" << std::endl;
   }
 }
 
@@ -186,7 +189,7 @@ CefViewBrowserApp::OnContextInitialized()
   if (g_use_custom_scheme_handler){
     std::cout << "Using Custom Scheme-OnContextInitialized" << std::endl;
     std::cout << "Using Custom Scheme-OnContextInitialized builtin_scheme_name_:" <<builtin_scheme_name_  <<std::endl;
-    CefRegisterSchemeHandlerFactory(builtin_scheme_name_, "", new CustomCefViewSchemeHandlerFactory(this));
+    CefRegisterSchemeHandlerFactory(builtin_scheme_name_, "test", new CustomCefViewSchemeHandlerFactory(this));
   } else
     // register custom scheme and handler
     CefRegisterSchemeHandlerFactory(builtin_scheme_name_, "", new CefViewSchemeHandlerFactory(this));
