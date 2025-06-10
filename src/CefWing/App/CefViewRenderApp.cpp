@@ -9,6 +9,7 @@
 #include <Common/CefViewCoreLog.h>
 
 #include <CefViewCoreProtocol.h>
+#include <iostream>
 
 CefViewRenderApp::CefViewRenderApp(const CefString& scheme_name, const CefString& bridge_name)
   : CefViewAppBase(scheme_name)
@@ -71,10 +72,15 @@ CefViewRenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser,
 
   // log this event
   frame->ExecuteJavaScript("console.info('[JSRuntime]:frame context created')", frame->GetURL(), 0);
+  std::cout << "Using OnContextCreated" << std::endl;
 
   // binding bridge object and functions
   auto frameId = frame->GetIdentifier();
   auto it = frame_id_to_bridge_obj_map_.find(frameId);
+  std::cout << "Using OnContextCreated frame Id1" << frameId << std::endl;
+  std::cout << "Using OnContextCreated frame Id2" << it._Getcont() << std::endl;
+  std::cout << "Using OnContextCreated frame Id3" <<  frame_id_to_bridge_obj_map_.end()._Getcont() << std::endl;
+
   if (it == frame_id_to_bridge_obj_map_.end()) {
     // create and insert the bridge Object into this frame.window object
     CefRefPtr<CefV8Value> objWindow = context->GetGlobal();

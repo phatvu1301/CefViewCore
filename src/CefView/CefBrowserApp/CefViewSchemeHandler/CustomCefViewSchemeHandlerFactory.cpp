@@ -24,6 +24,8 @@ CustomCefViewSchemeHandlerFactory::Create(CefRefPtr<CefBrowser> browser,
   std::cout << "CustomCefViewSchemeHandlerFactory - START " << std::endl;
   std::cout << "CustomCefViewSchemeHandlerFactory - START scheme_name " << scheme_name <<std::endl;
   std::cout << "CustomCefViewSchemeHandlerFactory - START request" << request->GetURL() <<std::endl;
+  std::cout << "CustomCefViewSchemeHandlerFactory - START frame" << frame->GetIdentifier() <<std::endl;
+
 
   if (!app_) {
     return nullptr;

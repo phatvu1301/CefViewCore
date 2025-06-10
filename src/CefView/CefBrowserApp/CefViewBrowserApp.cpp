@@ -189,7 +189,7 @@ CefViewBrowserApp::OnContextInitialized()
   if (g_use_custom_scheme_handler){
     std::cout << "Using Custom Scheme-OnContextInitialized" << std::endl;
     std::cout << "Using Custom Scheme-OnContextInitialized builtin_scheme_name_:" <<builtin_scheme_name_  <<std::endl;
-    CefRegisterSchemeHandlerFactory(builtin_scheme_name_, "test", new CustomCefViewSchemeHandlerFactory(this));
+    CefRegisterSchemeHandlerFactory(builtin_scheme_name_, "", new CustomCefViewSchemeHandlerFactory(this));
   } else
     // register custom scheme and handler
     CefRegisterSchemeHandlerFactory(builtin_scheme_name_, "", new CefViewSchemeHandlerFactory(this));
